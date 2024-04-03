@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:lmizania/views/res/colors.dart';
 import '../view_models/register_vm.dart';
 import '../views/1aa-emailVerification.dart';
 
@@ -12,9 +13,10 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   var email = "";
-  var username = "";
+  var fullname = "";
   var password = "";
   var _isObscure = true;
+  var _isAgreed = false;
   final _formKey = GlobalKey<FormState>();
   final RegisterViewmodel vmodel = RegisterViewmodel();
   @override
@@ -23,284 +25,498 @@ class _RegisterState extends State<Register> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/login-bg.png"))),
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: _formKey,
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      color: Colors.white,
-                    ),
+                  SizedBox(
+                    height: 50,
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Sign Up",style: TextStyle(color: Color(0xFF007B7F),fontSize: 32,fontWeight: FontWeight.w700),),
+                    ],
+                  ), //Sign up text
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35,vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "أنشء\nحسابا",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(color: Colors.white,fontFamily: 'Riwaya',fontWeight: FontWeight.bold, fontSize: 60),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 75,vertical: 5),
-                    child: TextFormField(
-                        onChanged: (p) => {username = p},
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "يرجى اسم المستخدم";
-                          }
-
-                          if (value.length < 3) {
-                            return ("3 مدخلات على الاقل");
-                          } else {
-                            return null;
-                          }
-                        },
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.end,
-                        decoration: InputDecoration(
-                          prefixIcon: IconButton(
-                              onPressed: () {},
-                              icon:  Icon(
-                                Icons.person,
-                                color: Colors.white.withOpacity(0.8),
-                              )),
-
-                          enabled: true,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.white),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.8)),
-                          ),
-                          hintText: "اسم المستخدم",
-                          hintStyle: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                        cursorColor: Colors.white),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
-                          onChanged: (e) => {email = e},
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.end,
-
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: Colors.white.withOpacity(0.8),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.white),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white.withOpacity(0.8)),
-                            ),
-                            hintText: "البريد الإلكتروني",
-                            hintStyle: TextStyle(
-                              fontFamily: 'Riwaya',
-                              color: Colors.white.withOpacity(0.8),
-                            ),
-                          ),
-                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (p) => {fullname = p},
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "البريد الإلكتروني";
+                              return "enter full name";
+                            }
+                            if(!RegExp(r"^[a-zA-Z]+( [a-zA-Z]+)*$")
+                                .hasMatch(value)){return ("wrong name format");}
+                            else {
+                            return null;
+                            }
+                          },
+                          style: const TextStyle(
+                            color: mainColor,
+                          ),
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: accentColor,
+                            ),
+                            filled: true,
+                            fillColor: mainColor.withOpacity(0.15),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: accentColor,width: 1),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: accentColor,width: 1,
+                              ),),
+                            hintText: "Full name",
+                            hintStyle: TextStyle(
+                              color: mainColor.withOpacity(0.75),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          keyboardType: TextInputType.name,
+                          cursorColor: mainColor)), //full name
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: TextFormField(
+                          onChanged: (p) => {email = p},
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "enter email";
                             }
                             if(!RegExp(r"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-                                .hasMatch(value)){return (" خطأ في صيغة البريد الإلكتروني");}
+                                .hasMatch(value)){return ("wrong email format");}
                             else {
                               return null;
                             }
                           },
-                          cursorColor: Colors.white)),
+                          style: const TextStyle(
+                            color: mainColor,
+                          ),
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: accentColor,
+                            ),
+                            filled: true,
+                            fillColor: mainColor.withOpacity(0.15),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: accentColor,width: 1),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: accentColor,width: 1,
+                              ),),
+                            hintText: "Email",
+                            hintStyle: TextStyle(
+                              color: mainColor.withOpacity(0.75),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          cursorColor: mainColor)), //email
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 75,vertical: 5),
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
                         onChanged: (p) => {password = p},
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "يرجى ادخال كلمة المرور";
+                            return "Enter password";
                           }
 
                           if (value.length < 8) {
-                            return ("8 مدخلات على الاقل");
+                            return ("Too short");
                           } else {
                             return null;
                           }
                         },
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.end,
+                        style: const TextStyle(color: mainColor),
+                        textAlign: TextAlign.start,
                         obscureText: _isObscure,
                         decoration: InputDecoration(
                           prefixIcon: IconButton(
                               onPressed: () {},
-                              icon:  Icon(
+                              icon: Icon(
                                 Icons.lock_outline,
-                                color: Colors.white.withOpacity(0.8),
+                                color: accentColor,
                               )),
                           suffixIcon: IconButton(
                               icon: Icon(
                                 _isObscure
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.white.withOpacity(0.8),
+                                color: accentColor,
                               ),
                               onPressed: () {
                                 setState(() {
                                   _isObscure = !_isObscure;
                                 });
                               }),
-                          enabled: true,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: Colors.white),
+                          filled: true,
+                          fillColor: mainColor.withOpacity(0.15),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: accentColor,width: 1),
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white.withOpacity(0.8)),
-                          ),
-                          hintText: "كلمة المرور",
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: accentColor,width: 1,
+                            ),),
+                          hintText: "Password",
                           hintStyle: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
+                            color: mainColor.withOpacity(0.75),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         // validator:
-                        cursorColor: Colors.white),
-                  ),
+                        cursorColor: mainColor),
+                  ), //password
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8),
+                    child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Renter password";
+                          }
+
+                          if (value != password) {
+                            return ("renter previous password");
+                          } else {
+                            return null;
+                          }
+                        },
+                        style: const TextStyle(color: mainColor),
+                        textAlign: TextAlign.start,
+                        obscureText: _isObscure,
+                        decoration: InputDecoration(
+                          prefixIcon: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.lock_outline,
+                                color: accentColor,
+                              )),
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: accentColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              }),
+                          filled: true,
+                          fillColor: mainColor.withOpacity(0.15),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: accentColor,width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: accentColor,width: 1,
+                            ),),
+                          hintText: "Confirm Password",
+                          hintStyle: TextStyle(
+                            color: mainColor.withOpacity(0.75),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        keyboardType: TextInputType.visiblePassword,
+                        // validator:
+                        cursorColor: mainColor),
+                  ), //confirm password
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: GestureDetector(
+
                       onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const Center(
-                              child: CircularProgressIndicator(
-                                  color: Colors.white),
-                            ),
-                          );
-                          String message = await vmodel.register(username, email, password);
-                          Navigator.pop(context);
-                          if(message =="success") {Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      EmailVerification()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EmailVerification()));
+                        // if (_formKey.currentState!.validate()) {
+                        //   if(_isAgreed){
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (context) => const Center(
+                        //       child: CircularProgressIndicator(
+                        //           color: accentColor),
+                        //     ),
+                        //   );
+                        //   String message = await vmodel.register(fullname,email, password);
+                        //   Navigator.pop(context);
+                        //   if(message =="success") {Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (context) =>
+                        //               EmailVerification()));
+                        //
+                        //
+                        //   } else
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) =>
+                        //             AlertDialog(
+                        //               title: const Text(
+                        //                 "Trouble",
+                        //                 style: TextStyle(
+                        //                     color:
+                        //                     Colors.red),
+                        //               ),
+                        //               content:  Text(
+                        //                   message),
+                        //               actions: [
+                        //                 GestureDetector(
+                        //                     onTap: () {
+                        //                       Navigator.pop(
+                        //                           context);
+                        //                     },
+                        //
+                        //                     child: Padding(
+                        //                       padding: const EdgeInsets.all(8.0),
+                        //                       child:  Text(
+                        //                           "return",
+                        //                           style: TextStyle(
+                        //                               fontWeight: FontWeight.bold,
+                        //
+                        //                               fontSize: 15,
+                        //                               color: mainColor)),
+                        //                     ))
+                        //               ],
+                        //             )
+                        //     );
+                        //   }
+                        //   else{
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) =>
+                        //             AlertDialog(
+                        //               title: const Text(
+                        //                 "Not Checked",
+                        //                 style: TextStyle(
+                        //                     color:
+                        //                     Colors.red),
+                        //               ),
+                        //               content:  Text(
+                        //                   "You have to agree to the privacy policy and terms of conditions"),
+                        //               actions: [
+                        //                 GestureDetector(
+                        //                     onTap: () {
+                        //                       Navigator.pop(
+                        //                           context);
+                        //                     },
+                        //
+                        //                     child: Padding(
+                        //                       padding: const EdgeInsets.all(8.0),
+                        //                       child:  Text(
+                        //                           "return",
+                        //                           style: TextStyle(
+                        //                               fontWeight: FontWeight.bold,
+                        //
+                        //                               fontSize: 15,
+                        //                               color: mainColor)),
+                        //                     ))
+                        //               ],
+                        //             )
+                        //     );
+                        //
+                        //   }
+                        //}
 
-
-                          } else
-                            showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    AlertDialog(
-                                      title: const Text(
-                                        "Trouble",
-                                        style: TextStyle(
-                                            color:
-                                            Colors.red),
-                                      ),
-                                      content:  Text(
-                                          message),
-                                      actions: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(
-                                                  context);
-                                            },
-
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child:  Text(
-                                                  "return",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-
-                                                      fontSize: 15,
-                                                      color: Colors.black)),
-                                            ))
-                                      ],
-                                    )
-                            );
-
-                        }
                       },
                       child: Container(
-                        height: 50,
-                        width: 150,
+                        height: 46,
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
+                          color: mainColor,
+
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Center(
                           child: Text(
-                            'أنشء حسابا',
+                            'Sign up',
                             style: TextStyle(
-                              decoration: TextDecoration.none,
-                              color: Colors.black,
+                                decoration: TextDecoration.none,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 155,),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 46),
+                  ),//sign up button
+                  Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          "!اللآن ",
-                          style: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
-                          ),
+                        Checkbox(value: _isAgreed, onChanged: (check){
+                          setState(() {
+                            _isAgreed= check!;
+                          });
+                        },activeColor: mainColor,),
+                        Column(
+                          children: [
+
+                            Row(
+                              children: [
+                                Text(
+                                  "I agree to the ",
+                                  style: TextStyle(
+                                    color: subtitlesColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                  },
+                                  child: Text(
+                                    "Privacy Policy",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: mainColor, decoration: TextDecoration.underline
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "and ",
+                                  style: TextStyle(
+                                    color: subtitlesColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                  },
+                                  child: Text(
+                                    "terms of conditions.",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: mainColor, decoration: TextDecoration.underline
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "سجل دخول",
-                            style: TextStyle(
-                                fontFamily: 'Riwaya',
-                                color: Colors.white,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
-                        Text(
-                          " ،لديك حساب بالفعل؟ اذا",
-                          style: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
+
                       ],
                     ),
-                  ),
+                  ), //policy agree
+                  SizedBox(height: 105),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 2,
+                        width: 120,
+                        color: mainColor.withOpacity(0.75),
+                      ),
+                      Text("or", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: mainColor),),
+                      Container(
+                        height: 2,
+                        width: 120,
+                        color: mainColor.withOpacity(0.75),
+                      ),
+                    ],
+                  ), //or separator
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () async {
+                      },
+                      child: Container(
+                        height: 46,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: mainColor,width: 2
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child:  Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/images/google.png",height: 36,width: 36,),
+                              Text(
+                                'Sign up with google',
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: mainColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ), //sign up with google
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account?",
+                            style: TextStyle(
+                              color: subtitlesColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: mainColor, decoration: TextDecoration.underline
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ), //back to login
                 ],
               ),
             ),

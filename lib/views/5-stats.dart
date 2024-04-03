@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
 
-class Notifications extends StatefulWidget {
-  const Notifications({super.key});
+class Statistics extends StatefulWidget {
+  const Statistics({super.key});
 
   @override
-  State<Notifications> createState() => _NotificationsState();
+  State<Statistics> createState() => _StatisticsState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _StatisticsState extends State<Statistics> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -17,9 +17,10 @@ class _NotificationsState extends State<Notifications> {
           onPressed: (){},
           icon: Icon(Icons.arrow_back, color: Colors.white,),
         ),
-        title: Text("Notifications",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+        title: Text("Statistics",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
         backgroundColor: mainColor,
       ),
       backgroundColor: backgroundShadeColor,
     ));
-}}
+  }
+}

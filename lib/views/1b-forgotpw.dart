@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lmizania/views/1aa-emailVerification.dart';
+import 'package:lmizania/views/res/colors.dart';
+import 'package:lmizania/views/util/auth-h1-subtitles.dart';
 import '../view_models/forgetpw_vm.dart';
 
 import '1ba-resetPassword.dart';
@@ -18,172 +21,140 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_circle_left_outlined,color: mainColor,size: 40,)),
+        ),
         backgroundColor: Colors.white,
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/login-bg.png"))),
+        body: SingleChildScrollView(
           child: Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             key: _formKey,
-            child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      color: Colors.white,
-                    ),
+                  SizedBox(
+                    height: 88,
                   ),
+
+                  AuthH1Sub(h1: "Forgot Password", sub: "Please enter the email address\nassociated with your account"),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 35, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "أعد ضبط \nكلمة سرك",
-                          style: TextStyle(color: Colors.white,fontFamily: 'Riwaya',fontWeight: FontWeight.bold, fontSize: 70),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30,),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 75, vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
-                          onChanged: (e) => {email = e},
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.end,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.email,
-                              color: Colors.white.withOpacity(0.8),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.8)),
-                            ),
-                            hintText: "البريد الإلكتروني",
-                            hintStyle: TextStyle(
-                              fontFamily: 'Riwaya',
-                              color: Colors.white.withOpacity(0.8),
-                            ),
-                          ),
-                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (p) => {email = p},
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "يرجى ادخال البريد الإلكتروني";
+                              return "enter email";
                             }
-                            if(!RegExp(r"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").hasMatch(value)){
-                              return "صيغة البريد الإلكتروني خاطئة";
-                            }
+                            if(!RegExp(r"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+                                .hasMatch(value)){return ("wrong email format");}
                             else {
                               return null;
                             }
                           },
-                          cursorColor: Colors.white)),
-                  SizedBox(height: 30,),
+                          style: const TextStyle(
+                            color: mainColor,
+                          ),
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: accentColor,
+                            ),
+                            filled: true,
+                            fillColor: mainColor.withOpacity(0.15),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: accentColor,width: 1),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: accentColor,width: 1,
+                              ),),
+                            hintText: "Email",
+                            hintStyle: TextStyle(
+                              color: mainColor.withOpacity(0.75),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          cursorColor: mainColor)), //email
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: GestureDetector(
                       onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const Center(
-                              child: CircularProgressIndicator(
-                                  color: Colors.white),
-                            ),
-                          );
-                          String message = await vmodel.verifyEmail(email);
-                          Navigator.pop(context);
-                          if(message == "success") {Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ResetPassword()));
-
-
-                          } else
-                            showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    AlertDialog(
-                                      title: const Text(
-                                        "Trouble",
-                                        style: TextStyle(
-                                            color:
-                                            Colors.red),
-                                      ),
-                                      content:  Text(
-                                          message),
-                                      actions: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              Navigator.pop(
-                                                  context);
-                                            },
-
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child:  Text(
-                                                  "return",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-
-                                                      fontSize: 15,
-                                                      color: Colors.black)),
-                                            ))
-                                      ],
-                                    )
-                            );
-
-                        }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResetPassword()));
+                        // if (_formKey.currentState!.validate()) {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (context) => const Center(
+                        //       child:
+                        //           CircularProgressIndicator(color: accentColor),
+                        //     ),
+                        //   );
+                        //String message = await vmodel.verifyEmail(email);
+                        //   Navigator.pop(context);
+                        //   if (message == "success") {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => EmailVerification()));
+                        //   } else
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) => AlertDialog(
+                        //               title: const Text(
+                        //                 "Trouble",
+                        //                 style: TextStyle(color: Colors.red),
+                        //               ),
+                        //               content: Text(message),
+                        //               actions: [
+                        //                 GestureDetector(
+                        //                     onTap: () {
+                        //                       Navigator.pop(context);
+                        //                     },
+                        //                     child: Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.all(8.0),
+                        //                       child: Text("return",
+                        //                           style: TextStyle(
+                        //                               fontWeight:
+                        //                                   FontWeight.bold,
+                        //                               fontSize: 15,
+                        //                               color: mainColor)),
+                        //                     ))
+                        //               ],
+                        //             ));
+                        // }
                       },
                       child: Container(
-                        height: 50,
-                        width: 100,
+                        height: 46,
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Center(
                           child: Text(
-                            'تأكد من الحساب',
+                            'Submit',
                             style: TextStyle(
-                              decoration: TextDecoration.none,
-                              color: Colors.black,
-                              fontFamily: 'Riwaya',
-                            ),
+                                decoration: TextDecoration.none,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Center(
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "تذكرت كلمة المرور؟",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Riwaya',
-                                decoration: TextDecoration.underline),
-                          ))),
-                  SizedBox(height: 230,)
+                  ), //submit button
                 ],
               ),
             ),

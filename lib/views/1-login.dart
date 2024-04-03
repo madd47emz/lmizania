@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lmizania/views/res/colors.dart';
+import 'package:lmizania/views/util/auth-h1-subtitles.dart';
 import '../view_models/login_vm.dart';
 import '../views/1a-register.dart';
 import '../views/1b-forgotpw.dart';
@@ -23,108 +25,103 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/login-bg.png"))),
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: _formKey,
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40),
-                    child: Container(
-                      height: 50,
-                      width: 100,
-                      color: Colors.white,
-                    ),
+                  SizedBox(
+                    height: 88,
                   ),
+
+                  AuthH1Sub(h1: "Welcome Back", sub: "Login to your account"),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Login",
+                        style: TextStyle(
+                            color: Color(0xFF007B7F),
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ), //login text
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 35, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "مرحبا\n!بعودتك",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(color: Colors.white,fontFamily: 'Riwaya',fontWeight: FontWeight.bold, fontSize: 70),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 75, vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
                           onChanged: (e) => {email = e},
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: mainColor,
                           ),
-                          textAlign: TextAlign.end,
+                          textAlign: TextAlign.start,
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.person,
-                              color: Colors.white.withOpacity(0.8),
+                              color: accentColor,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                            filled: true,
+                            fillColor: mainColor.withOpacity(0.15),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: accentColor,width: 1),
                             ),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.8)),
-                            ),
-                            hintText: "اسم المستخدم أو البريد الإلكتروني",
+                                  color: accentColor,width: 1,
+                            ),),
+                            hintText: "Username/Email",
                             hintStyle: TextStyle(
-                              fontFamily: 'Riwaya',
-                              color: Colors.white.withOpacity(0.8),
+                              color: mainColor.withOpacity(0.75),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "يرجى ادخال اسم المستخدم أو البريد الإلكتروني";
-                            }
-                            else {
+                              return "Enter Username/Email";
+                            } else {
                               return null;
                             }
                           },
-                          cursorColor: Colors.white)),
+                          cursorColor: mainColor)), //email
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 75, vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
                         onChanged: (p) => {password = p},
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "يرجى ادخال كلمة المرور";
+                            return "Enter password";
                           }
 
                           if (value.length < 8) {
-                            return ("8 مدخلات على الاقل");
+                            return ("Too short");
                           } else {
                             return null;
                           }
                         },
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.end,
+                        style: const TextStyle(color: mainColor),
+                        textAlign: TextAlign.start,
                         obscureText: _isObscure,
                         decoration: InputDecoration(
                           prefixIcon: IconButton(
                               onPressed: () {},
                               icon: Icon(
                                 Icons.lock_outline,
-                                color: Colors.white.withOpacity(0.8),
+                                color: accentColor,
                               )),
                           suffixIcon: IconButton(
                               icon: Icon(
                                 _isObscure
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.white.withOpacity(0.8),
+                                color: accentColor,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -132,101 +129,32 @@ class _LoginState extends State<Login> {
                                 });
                               }),
                           enabled: true,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                          filled: true,
+                          fillColor: mainColor.withOpacity(0.15),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: accentColor,width: 1),
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.8)),
-                          ),
-                          hintText: "كلمة المرور",
+                              color: accentColor,width: 1,
+                            ),),
+                          hintText: "Password",
                           hintStyle: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
+                            color: mainColor.withOpacity(0.75),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         // validator:
-                        cursorColor: Colors.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const Center(
-                              child: CircularProgressIndicator(
-                                  color: Colors.white),
-                            ),
-                          );
-                          String message = await vmodel.login(email, password);
-                          Navigator.pop(context);
-                          if(message =="success") {Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Dash()));
-
-
-                          } else
-                              showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      AlertDialog(
-                                        title: const Text(
-                                          "Trouble",
-                                          style: TextStyle(
-                                              color:
-                                              Colors.red),
-                                        ),
-                                        content:  Text(
-                                            message),
-                                        actions: [
-                                          GestureDetector(
-                                              onTap: () {
-                                                Navigator.pop(
-                                                    context);
-                                              },
-
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child:  Text(
-                                                    "return",
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-
-                                                      fontSize: 15,
-                                                        color: Colors.black)),
-                                              ))
-                                        ],
-                                      )
-                              );
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'تسجيل دخول',
-                            style: TextStyle(
-                              decoration: TextDecoration.none,
-                              color: Colors.black,
-                              fontFamily: 'Riwaya',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                      child: GestureDetector(
+                        cursorColor: mainColor),
+                  ), //password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -234,50 +162,176 @@ class _LoginState extends State<Login> {
                                     builder: (context) => ForgotPassword()));
                           },
                           child: Text(
-                            "نسيت كلمة المرور؟",
+                            "Forgot password?",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Riwaya',
+                                color: mainColor.withOpacity(0.7),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
                                 decoration: TextDecoration.underline),
-                          ))),
-                  SizedBox(height: 175,),
+                          )),
+                    ],
+                  ), //forgot password
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 46),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "!اللآن ",
-                          style: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
-                          ),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () async {
+                        Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Dash()));
+                        // if (_formKey.currentState!.validate()) {
+                        //   showDialog(
+                        //     context: context,
+                        //     builder: (context) => const Center(
+                        //       child:
+                        //           CircularProgressIndicator(color: accentColor),
+                        //     ),
+                        //   );
+                        //   String message = await vmodel.login(email, password);
+                        //   Navigator.pop(context);
+                        //   if (message == "success") {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => Dash()));
+                        //   } else
+                        //     showDialog(
+                        //         context: context,
+                        //         builder: (context) => AlertDialog(
+                        //               title: const Text(
+                        //                 "Trouble",
+                        //                 style: TextStyle(color: Colors.red),
+                        //               ),
+                        //               content: Text(message),
+                        //               actions: [
+                        //                 GestureDetector(
+                        //                     onTap: () {
+                        //                       Navigator.pop(context);
+                        //                     },
+                        //                     child: Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.all(8.0),
+                        //                       child: Text("return",
+                        //                           style: TextStyle(
+                        //                               fontWeight:
+                        //                                   FontWeight.bold,
+                        //                               fontSize: 15,
+                        //                               color: mainColor)),
+                        //                     ))
+                        //               ],
+                        //             ));
+                        // }
+                      },
+                      child: Container(
+                        height: 46,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Register()));
-                          },
+                        child: const Center(
                           child: Text(
-                            "أنشء حسابا",
+                            'Login',
                             style: TextStyle(
+                                decoration: TextDecoration.none,
                                 color: Colors.white,
-                                fontFamily: 'Riwaya',
-                                decoration: TextDecoration.underline),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16),
                           ),
                         ),
-                        Text(
-                          " ،لا تملك حسابا؟ اذا",
-                          style: TextStyle(
-                            fontFamily: 'Riwaya',
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ), //login button
+                  SizedBox(height: 175),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 2,
+                        width: 120,
+                        color: mainColor.withOpacity(0.75),
+                      ),
+                      Text(
+                        "or",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: mainColor),
+                      ),
+                      Container(
+                        height: 2,
+                        width: 120,
+                        color: mainColor.withOpacity(0.75),
+                      ),
+                    ],
+                  ), //or separator
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () async {},
+                      child: Container(
+                        height: 46,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: mainColor,width: 2
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child:  Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/images/google.png",height: 36,width: 36,),
+                              Text(
+                                'Sign in with google',
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: mainColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ), //sign in with google
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Dont have and account?",
+                            style: TextStyle(
+                              color: subtitlesColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Register()));
+                            },
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: mainColor,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ), //register
                 ],
               ),
             ),

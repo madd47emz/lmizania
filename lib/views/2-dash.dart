@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lmizania/views/4-wallet.dart';
+import 'package:lmizania/views/5-stats.dart';
+import 'package:lmizania/views/6-settings.dart';
+import 'package:lmizania/views/res/colors.dart';
 import '../views/3-home.dart';
-import '../views/4-bookmark.dart';
 
 
 class Dash extends StatefulWidget {
@@ -11,7 +14,7 @@ class Dash extends StatefulWidget {
 }
 
 class _DashState extends State<Dash> {
-  int _current = 4;
+  int _current = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,17 +22,15 @@ class _DashState extends State<Dash> {
       body: IndexedStack(
         index: _current,
         children: [
-          Container(),//profile
-          Container(),//trending
-          Container(),//search
-          BookMark(),//bookmark
           Home(),//home
+          Wallet(),//wallet
+          Statistics(),//statistics
+          Settings(),//settings
         ],
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
-            canvasColor: Colors.black,
+            canvasColor: mainColor,
             ),
         child: BottomNavigationBar(
 
@@ -39,23 +40,20 @@ class _DashState extends State<Dash> {
             onTap: (idx) => setState(() {
               _current = idx;
             }),
-            showSelectedLabels: false,
+            showSelectedLabels: true,
             showUnselectedLabels: false,
             selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey,
+            unselectedItemColor: Colors.white.withOpacity(0.8),
 
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.trending_up), label: "Trending"),
+                  icon: Icon(Icons.wallet), label: "Wallet"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: "Search"),
+                  icon: Icon(Icons.bar_chart), label: "Statistics"),
 
               BottomNavigationBarItem(
-                  icon: Icon(Icons.bookmark), label: "Bookmark"),
-
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home), label: "Home"),
+                  icon: Icon(Icons.settings), label: "Settings"),
             ]),
       ),
     );

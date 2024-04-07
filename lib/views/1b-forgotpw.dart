@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lmizania/views/1aa-emailVerification.dart';
 import 'package:lmizania/views/res/colors.dart';
 import 'package:lmizania/views/util/auth-h1-subtitles.dart';
-import '../view_models/forgetpw_vm.dart';
+import '../view_models/1-forgetpw_vm.dart';
 
 import '1ba-resetPassword.dart';
 

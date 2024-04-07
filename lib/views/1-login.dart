@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
 import 'package:lmizania/views/util/auth-h1-subtitles.dart';
-import '../view_models/login_vm.dart';
+import '../view_models/1-login_vm.dart';
 import '../views/1a-register.dart';
 import '../views/1b-forgotpw.dart';
 import '../views/2-dash.dart';

@@ -5,6 +5,9 @@ import 'package:lmizania/views/3b-new-transaction.dart';
 import 'package:lmizania/views/res/colors.dart';
 import 'package:lmizania/views/util/transaction-card.dart';
 
+import '../repositories/transaction-repo.dart';
+import '../view_models/home-vm.dart';
+
 class Home extends StatefulWidget {
 
   const Home({super.key});
@@ -14,8 +17,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> chips = [Chip(label: Text("Recent transactions",style: TextStyle(color: mainColor,fontSize: 16,fontWeight: FontWeight.w600),),backgroundColor: Colors.white,)];
-  List<TransactionCard> cards =[TransactionCard(transaction: Transaction()),TransactionCard(transaction: Transaction()),TransactionCard(transaction: Transaction()),TransactionCard(transaction: Transaction()),TransactionCard(transaction: Transaction())];
+
+  final _homeViewModel = HomeViewModel(TransactionRepository());
+  var _goToAllTransactions = true;
+
+  List<Widget> chips = [const Chip(label: Text("Recent transactions",style: TextStyle(color: mainColor,fontSize: 16,fontWeight: FontWeight.w600),),backgroundColor: Colors.white,)];
+
+  List<TransactionCard> cards =[TransactionCard(transaction: Transaction(id: 1, title: '', amount: 0.0, date: DateTime.now(), type: true, category: '')),
+    TransactionCard(transaction: Transaction(id: 1, title: '', amount: 0.0, date: DateTime.now(), type: true, category: '')),
+    TransactionCard(transaction: Transaction(id: 1, title: '', amount: 0.0, date: DateTime.now(), type: true, category: '')),
+    TransactionCard(transaction: Transaction(id: 1, title: '', amount: 0.0, date: DateTime.now(), type: true, category: '')),
+    TransactionCard(transaction: Transaction(id: 1, title: '', amount: 0.0, date: DateTime.now(), type: true, category: ''))];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _homeViewModel.loadRecentTransactions();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +144,26 @@ class _HomeState extends State<Home> {
               Column(
                 children: cards,
               ),
+              // FutureBuilder<List<Transaction>>(
+              //   future: _homeViewModel.recentTransactions,
+              //   builder: (context, snapshot) {
+              //     if (snapshot.hasData) {
+              //       if(snapshot.data!.isNotEmpty){
+              //         _goToAllTransactions = true;
+              //       return ListView.builder(
+              //         itemBuilder: (context, index) => TransactionCard(transaction: snapshot.data![index],),
+              //       );}
+              //       else if (snapshot.data!.isEmpty){
+              //         return Center(child: Text("No Transactions"));
+              //       }
+              //     }
+              //     else if (snapshot.hasError) {
+              //       return Center(child: Text('Error: ${snapshot.error}'));
+              //     }
+              //     return Center(child: CircularProgressIndicator());
+              //   },
+              // ),
+              _goToAllTransactions?
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 19,horizontal: 16 ),
                 child: GestureDetector(
@@ -161,7 +199,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-              ), //all transactions
+              ):SizedBox(height: 1,width: 1,), //all transactions
 
             ],
           ),

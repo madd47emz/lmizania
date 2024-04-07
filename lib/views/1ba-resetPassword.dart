@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
 import 'package:lmizania/views/util/auth-h1-subtitles.dart';
-import '../view_models/resetPassword_vm.dart';
-import '../views/1-login.dart';
-import '2-dash.dart';
+import '../view_models/1-resetPassword_vm.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});

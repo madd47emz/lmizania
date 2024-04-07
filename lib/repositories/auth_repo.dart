@@ -1,21 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRepo {
-  String baseUrl = "http://192.168.96.208:3000/auth";
-  Future<String> login(String username, String password) async {
-    final SharedPreferences cashe = await SharedPreferences.getInstance();
+import '../views/res/http.dart';
 
-    Dio dio = Dio();
-    dio.options.receiveTimeout = const Duration(seconds: 100);
-    dio.options.connectTimeout = const Duration(seconds: 100);
+class AuthRepo {
+  final Dio dio = Dio();
+  Future<String> login(String username, String password) async {
+    final SharedPreferences cache = await SharedPreferences.getInstance();
 
     try {
       Response response = await dio.post("$baseUrl/login/user",
           data: {'emailOrUserName': username, 'password': password});
 
       if (response.statusCode == 201) {
-        cashe.setString("accessToken", response.data["accessToken"]);
+        cache.setString("accessToken", response.data["accessToken"]);
         return "success";
       } else {
         return response.data["message"];
@@ -31,19 +29,15 @@ class AuthRepo {
   }
 
   Future<String> register(String username, String email, String pw) async {
-    final SharedPreferences cashe = await SharedPreferences.getInstance();
-
-    Dio dio = Dio();
-    dio.options.receiveTimeout = const Duration(seconds: 100);
-    dio.options.connectTimeout = const Duration(seconds: 100);
+    final SharedPreferences cache = await SharedPreferences.getInstance();
 
     try {
       Response response = await dio.post("$baseUrl/register/user",
           data: {"username": username, "email": email, "password": pw});
 
       if (response.statusCode == 201) {
-        cashe.setString("accessToken", response.data["accessToken"]);
-        cashe.setString("emailToken", response.data["emailToken"]);
+        cache.setString("accessToken", response.data["accessToken"]);
+        cache.setString("emailToken", response.data["emailToken"]);
         return "success";
       } else {
         return response.data["message"][0];
@@ -60,12 +54,8 @@ class AuthRepo {
 
 
   Future<bool> validateEmail(String otp) async {
-    final SharedPreferences cashe = await SharedPreferences.getInstance();
-    final String? token = cashe.getString("emailToken");
-
-    Dio dio = Dio();
-    dio.options.receiveTimeout = const Duration(seconds: 100);
-    dio.options.connectTimeout = const Duration(seconds: 100);
+    final SharedPreferences cache = await SharedPreferences.getInstance();
+    final String? token = cache.getString("emailToken");
 
     try {
       Response response = await dio.get("$baseUrl/email/verify/$token/$otp");
@@ -83,18 +73,14 @@ class AuthRepo {
   }
 
   Future<String> verifyEmail(String email) async {
-    final SharedPreferences cashe = await SharedPreferences.getInstance();
-
-    Dio dio = Dio();
-    dio.options.receiveTimeout = const Duration(seconds: 100);
-    dio.options.connectTimeout = const Duration(seconds: 100);
+    final SharedPreferences cache = await SharedPreferences.getInstance();
 
     try {
       Response response = await dio.get("$baseUrl/email/forgot-password/$email");
 
       if (response.statusCode == 200) {
-        cashe.setString("emailToken", response.data["newPasswordToken"]);
-        cashe.setString("email", email);
+        cache.setString("emailToken", response.data["newPasswordToken"]);
+        cache.setString("email", email);
         return "success";
       } else {
         return response.data["message"];
@@ -110,12 +96,8 @@ class AuthRepo {
   }
 
   Future<bool> resetPassword(String otp, String newPassword) async {
-    final SharedPreferences cashe = await SharedPreferences.getInstance();
-    final String? token = cashe.getString("emailToken");
-
-    Dio dio = Dio();
-    dio.options.receiveTimeout = const Duration(seconds: 100);
-    dio.options.connectTimeout = const Duration(seconds: 100);
+    final SharedPreferences cache = await SharedPreferences.getInstance();
+    final String? token = cache.getString("emailToken");
 
     try {
       Response response = await dio.post("$baseUrl/email/reset-password/$otp",data: {"newPassword":newPassword,"newPasswordToken":token});

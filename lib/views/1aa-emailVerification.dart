@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
 import 'package:lmizania/views/util/auth-h1-subtitles.dart';
 import 'package:lmizania/views/util/otp-feild.dart';
-import '../view_models/emailVerification_vm.dart';
+import '../view_models/1-emailVerification_vm.dart';
 import '../views/2-dash.dart';
 
 class EmailVerification extends StatefulWidget {

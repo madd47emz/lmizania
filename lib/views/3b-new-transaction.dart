@@ -28,13 +28,14 @@ class _NewTransactionState extends State<NewTransaction> {
           title: Text("New Transaction",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
           backgroundColor: mainColor,
           bottom: TabBar(
+
             indicatorColor: Colors.white  ,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white.withOpacity(0.9),
             tabs: [
               Tab(icon: Icon(Icons.arrow_downward), text: 'Income'),
               Tab(icon: Icon(Icons.arrow_upward), text: 'Expense'),
-              
+
             ],
           ),
         ),
@@ -46,7 +47,7 @@ class _NewTransactionState extends State<NewTransaction> {
             Expenses()
           ],
         ),
-        ),
+      ),
     ));
   }
 }

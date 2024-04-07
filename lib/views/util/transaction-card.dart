@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
 
 import '../../models/transaction.dart';
+import '../../repositories/transaction-repo.dart';
+import '../../view_models/2-actions-on-transaction-vm.dart';
+import '../res/category-iconData.dart';
+import 'actions-on-transaction-bottom-sheet.dart';
 
 class TransactionCard extends StatelessWidget {
   final Transaction transaction;
@@ -10,8 +14,6 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<IconData> categoryIcons = [Icons.home,Icons.car_crash,Icons.airplanemode_active,
-      Icons.fastfood,Icons.book,Icons.phone,Icons.pets];
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Card(
@@ -22,13 +24,19 @@ class TransactionCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
-            leading: Icon(//categoryIcons[transaction.categoryIdx],
+            leading: Icon(//categories[transaction.category]
             Icons.monetization_on, size: 36,color: mainColor,),
             title: Text("category",style: TextStyle(color: mainColor,fontSize: 16,fontWeight: FontWeight.bold),),
             subtitle: Text('object',style: TextStyle(color: mainColor.withOpacity(0.75),fontSize: 12),),
             trailing: Text("1000"+" DA",style: TextStyle(//color: transaction.type?Colors.green:Colors.red,
             color: Colors.red, fontSize: 16,fontWeight: FontWeight.bold),),
-            onTap: ()async {},
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => actionsOnTransactionBottomSheet(context,transaction),
+              );
+
+            },
 
           ),
         ),

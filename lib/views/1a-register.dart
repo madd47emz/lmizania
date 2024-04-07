@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lmizania/views/res/colors.dart';
-import '../view_models/register_vm.dart';
+import '../view_models/1-register_vm.dart';
 import '../views/1aa-emailVerification.dart';
 
 class Register extends StatefulWidget {

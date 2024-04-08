@@ -8,40 +8,33 @@ import '../res/colors.dart';
 
 class CategoryBadge extends StatefulWidget {
   final String category;
+  bool isTapped;
 
-  const CategoryBadge({super.key, required this.category});
+  CategoryBadge({super.key, required this.category, required this.isTapped});
 
   @override
   State<CategoryBadge> createState() => _CategoryBadgeState();
 }
 
 class _CategoryBadgeState extends State<CategoryBadge> {
-  bool isTapped = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 62,
       width: 62,
       decoration: BoxDecoration(
-        color: isTapped?mainColor:mainColor.withOpacity(0.15),
+        color: widget.isTapped?mainColor:mainColor.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: GestureDetector(
-        onTap: (){
-          isTapped != isTapped;
-          setState(() {
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(categories[widget.category],color: widget.isTapped?Colors.white:mainColor, size: 30,),
+          Text(widget.category, style: TextStyle(color: widget.isTapped?Colors.white:mainColor, fontSize: 14,fontWeight: FontWeight.w400),),
 
-          });
-          },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(categories[widget.category],color: isTapped?Colors.white:mainColor, size: 30,),
-            Text(widget.category, style: TextStyle(color: isTapped?Colors.white:mainColor, fontSize: 14,fontWeight: FontWeight.w400),),
-
-          ],
-        ),
+        ],
       ),
     );
   }

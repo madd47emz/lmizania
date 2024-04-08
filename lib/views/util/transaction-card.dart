@@ -33,7 +33,7 @@ class TransactionCard extends StatelessWidget {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (context) => actionsOnTransactionBottomSheet(context,transaction),
+                builder: (context) => ActionsOnTransactionBottomSheet(transaction: transaction)
               );
 
             },
